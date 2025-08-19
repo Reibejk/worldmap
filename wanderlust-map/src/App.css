@@ -1,0 +1,73 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  
+}
+
+.App {
+  color:#0664c9f5;
+  text-shadow: 0 0 5px rgb(196, 236, 255),
+               0 0 10px rgb(21, 196, 196), 
+               0 0 15px rgb(3, 34, 34);
+}
+/* src/App.css */
+.leaflet-container {
+  position: absolute;
+  cursor: pointer;
+  height: 100vh; /* vh stands for viewport height */
+  width: 100vw;  /* vw stands for viewport width */
+}
+
+/* Add some basic styles to App.css or a new CSS file */
+.form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.form-container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+}
+
+.form-container input,
+.form-container textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-container button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-container .close-button {
+  background-color: #6c757d;
+  margin-top: 5px;
+}

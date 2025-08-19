@@ -1,0 +1,26 @@
+# Netlify Build Settings for a Vite Project
+
+[build]
+  # This is the command Netlify will run to build your site.
+  command = "npm run build"
+
+  # This is the directory that contains the built site.
+  # Vite outputs to the 'dist' folder.
+  publish = "dist"
+
+  # The functions directory is for serverless functions (optional, but good to have)
+  # functions = "netlify/functions"
+
+# The [dev] block is used by the Netlify CLI for local development.
+# It helps match the local dev environment to the production one.
+[dev]
+  command = "npm run dev" # Command to start the dev server
+  targetPort = 5173      # The port your Vite dev server runs on
+
+# This is a crucial rule for Single Page Applications (SPAs) like React.
+# It ensures that if a user reloads the page on a deep link (e.g., yoursite.com/some-page),
+# they are still served your app instead of getting a 404 error.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
