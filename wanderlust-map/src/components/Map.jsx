@@ -22,6 +22,7 @@ const Map = () => {
     };
     fetchPins();
   }, []);
+  
 
   const handleMapClick = (latlng) => {
     setNewPinLocation(latlng);
