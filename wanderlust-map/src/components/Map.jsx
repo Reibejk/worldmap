@@ -4,25 +4,28 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import LocationMarker from './LocationMarker';
 import AddPinForm from './AddPinForm'; // We will create this component next
 import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 // ... (Leaflet icon fix from before)
 
-const Map = () => {
+const Map = ({ user }) => {
   const [pins, setPins] = useState([]);
   const [newPinLocation, setNewPinLocation] = useState(null);
 
   // Fetch existing pins from Firestore
   useEffect(() => {
-    const fetchPins = async () => {
-      const pinsCollection = collection(db, 'pins');
-      const pinsSnapshot = await getDocs(pinsCollection);
+   const fetchPins = async () => {
+      if (!user) return; // Don't fetch if no user is logged in
+      
+      const q = query(collection(db, 'pins'), where("userId", "==", user.uid));
+      
+      const pinsSnapshot = await getDocs(q);
       const pinsList = pinsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setPins(pinsList);
     };
     fetchPins();
-  }, []);
-  
+  }, [user]); // Re-run the effect if the user changes
+
 
   const handleMapClick = (latlng) => {
     setNewPinLocation(latlng);
@@ -66,6 +69,7 @@ const Map = () => {
           position={newPinLocation}
           onClose={handleFormClose}
           onPinAdded={handlePinAdded}
+          user={user}
         />
       )}
     </>

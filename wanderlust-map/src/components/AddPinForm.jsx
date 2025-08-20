@@ -4,7 +4,7 @@ import { db } from '../firebase'; // No longer need 'storage'
 import { collection, addDoc } from 'firebase/firestore';
 // No longer need Firebase Storage imports
 
-const AddPinForm = ({ position, onClose, onPinAdded }) => {
+const AddPinForm = ({ position, onClose, onPinAdded, user }) => {
   const [title, setTitle] = useState('');
   const [notes, setNotes] = useState('');
   // We will store the Base64 string here instead of the file object
@@ -41,6 +41,7 @@ const AddPinForm = ({ position, onClose, onPinAdded }) => {
         lat: position.lat,
         lng: position.lng,
         createdAt: new Date(),
+        userId: user.uid,
       };
       const docRef = await addDoc(collection(db, 'pins'), newPinData);
       
