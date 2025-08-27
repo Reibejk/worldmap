@@ -1,16 +1,22 @@
 // src/components/Map.jsx
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import LocationMarker from './LocationMarker';
-import AddPinForm from './AddPinForm'; // We will create this component next
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import { db } from '../firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
+import LocationMarker from './LocationMarker';
+import AddPinForm from './AddPinForm'; // We will create this component next
+import VisitedList from './VisitedList'; // Import the sidebar
+import MapController from './MapController'; // Import the controller
+
+
 // ... (Leaflet icon fix from before)
 
-const Map = ({ user }) => {
+const Map = ({ user, isListOpen, onCloseList }) => {
   const [pins, setPins] = useState([]);
   const [newPinLocation, setNewPinLocation] = useState(null);
+  const [selectedPin, setSelectedPin] = useState(null); // State for the selected pin from the list
 
   // Fetch existing pins from Firestore
   useEffect(() => {
@@ -40,8 +46,19 @@ const Map = ({ user }) => {
       setNewPinLocation(null);
   };
 
+  const handlePinSelect = (pin) => {
+    setSelectedPin(pin);
+    onCloseList(); // Close the sidebar after selecting a pin
+  };
+
   return (
     <>
+      <VisitedList 
+        pins={pins} 
+        isOpen={isListOpen} 
+        onClose={onCloseList} 
+        onPinSelect={handlePinSelect}
+      />
       <MapContainer center={[20, 0]} zoom={3} style={{ height: '100vh', width: '100%' }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -49,7 +66,6 @@ const Map = ({ user }) => {
         />
         <LocationMarker onMapClick={handleMapClick} />
         
-        {/* Display existing pins */}
         {pins.map(pin => (
           <Marker key={pin.id} position={[pin.lat, pin.lng]}>
             <Popup>
@@ -61,9 +77,11 @@ const Map = ({ user }) => {
             </Popup>
           </Marker>
         ))}
+
+        {/* Add the map controller here */}
+        <MapController selectedPin={selectedPin} />
       </MapContainer>
 
-      {/* Show the form as a modal/overlay */}
       {newPinLocation && (
         <AddPinForm
           position={newPinLocation}
