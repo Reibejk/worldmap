@@ -1,6 +1,6 @@
 import React from 'react';
 
-const VisitedList = ({ pins, isOpen, onClose, onPinSelect }) => {
+const VisitedList = ({ pins, isOpen, onClose, onPinSelect, selectedPin }) => {
   if (!isOpen) {
     return null;
   }
@@ -16,7 +16,11 @@ const VisitedList = ({ pins, isOpen, onClose, onPinSelect }) => {
         <ul className="sidebar-list">
           {pins.length > 0 ? (
             pins.map(pin => (
-              <li key={pin.id} onClick={() => onPinSelect(pin)}>
+              <li 
+                key={pin.id} 
+                onClick={() => onPinSelect(pin)}
+                className={selectedPin?.id === pin.id ? 'active' : ''}
+              >
                 {pin.title}
               </li>
             ))

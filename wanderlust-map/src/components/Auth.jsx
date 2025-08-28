@@ -41,6 +41,7 @@ const Auth = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="email"
           />
           <input
             type="password"
@@ -48,6 +49,7 @@ const Auth = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete={isLogin ? "current-password" : "new-password"} 
           />
           <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
           {error && <p style={{ color: 'red' }}>{error}</p>}

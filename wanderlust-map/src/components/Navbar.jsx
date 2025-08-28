@@ -1,23 +1,42 @@
 // src/components/Navbar.jsx
 import React from 'react';
 
-// Props will be functions and data passed from the App component
-const Navbar = ({ user, onLogout, onToggleList }) => {
+const Navbar = ({ user, onLogout, onToggleList, isMobileMenuOpen, onToggleMobileMenu }) => {
+
   return (
     <nav className="navbar">
       <div className="navbar-brand">
         WanderlustMap
       </div>
-      <div className="navbar-menu">
-        <button className="menu-button" onClick={onToggleList}>
-          My Trips
-        </button>
-        {/* Add more buttons for future features here */}
+
+      {/* --- DESKTOP MENU --- */}
+      <div className="navbar-menu desktop">
+        <button className="menu-button" onClick={onToggleList}>My Trips</button>
       </div>
-      <div className="navbar-user">
+      <div className="navbar-user desktop">
         <span>{user.email}</span>
         <button onClick={onLogout} className="logout-button">Logout</button>
       </div>
+
+      {/* --- HAMBURGER ICON (Mobile Only) --- */}
+      <div className="hamburger-icon" onClick={onToggleMobileMenu}>
+        &#9776; {/* This is the hamburger character */}
+      </div>
+
+      {/* --- MOBILE MENU (Dropdown) --- */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu">
+          <div className="mobile-user-info">
+            Signed in as: {user.email}
+          </div>
+          <button className="menu-button" onClick={() => { onToggleList(); onToggleMobileMenu(); }}>
+            My Trips
+          </button>
+          <button onClick={() => { onLogout(); onToggleMobileMenu(); }} className="logout-button">
+            Logout
+          </button>
+        </div>
+      )}
     </nav>
   );
 };

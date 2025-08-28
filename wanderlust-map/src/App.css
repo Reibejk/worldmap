@@ -6,7 +6,6 @@
 #root {
   width: 100vw;
   height: 100vh;
-  max-width: 1280px;
   margin: 0 auto;
   padding: 0;
   text-align: center;
@@ -19,11 +18,22 @@
                0 0 10px rgb(192, 221, 255);
 }
 
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Make the layout fill the entire screen height */
+  width: 100vw;
+}
+
+.map-container-wrapper {
+  flex-grow: 1; 
+  position: relative;
+}
+
+
 .navbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  position: relative;
+  width: 100%; 
   background-color: white;
   padding: 15px 30px;
   z-index: 1001; /* Must be higher than the map */
@@ -70,7 +80,7 @@
 }
 
 .navbar-user .logout-button {
-  background-color: #6c757d;
+  background-color: #b81904;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -144,7 +154,12 @@
   background-color: #f0f8ff;
 }
 
-/* Add to your App.css */
+.sidebar-list li.active {
+  background-color: #e6f7ff; /* A light blue highlight */
+  border-left: 3px solid #007bff;
+  font-weight: bold;
+}
+
 .auth-container {
   width: 100vw;
   height: 100vh;
@@ -219,12 +234,32 @@
   cursor: pointer;
 }
 
+.recenter-button {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Make sure it's above the map tiles */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: background-color 0.2s;
+}
+
+.recenter-button:hover {
+  background-color: #0056b3;
+}
+
 /* src/App.css */
 .leaflet-container {
-  position: absolute;
-  cursor: pointer;
-  height: 100vh; /* vh stands for viewport height */
-  width: 100vw;  /* vw stands for viewport width */
+  height: 100%; /* vh stands for viewport height */
+  width: 100%;  /* vw stands for viewport width */
 }
 
 /* Add some basic styles to App.css or a new CSS file */
@@ -270,4 +305,56 @@
 .form-container .close-button {
   background-color: #6c757d;
   margin-top: 5px;
+}
+/* === MOBILE MENU STYLES (REFACTORED) === */
+
+/* Hamburger Icon styling */
+.hamburger-icon {
+  display: none; /* Hidden by default on desktop */
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Mobile Menu dropdown styling */
+.mobile-menu {
+  position: absolute;
+  top: 100%; /* Position it right below the navbar */
+  left: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: flex; /* This will now always be flex when the component is rendered */
+  flex-direction: column;
+  padding: 10px 0;
+  z-index: 1100; /* High z-index to be on top of everything */
+}
+
+.mobile-menu .menu-button,
+.mobile-menu .logout-button {
+  width: calc(100% - 40px);
+  margin: 10px 20px;
+  text-align: left;
+  padding: 15px;
+}
+
+.mobile-user-info {
+  padding: 10px 20px;
+  color: #555;
+  font-style: italic;
+  border-bottom: 1px solid #eee;
+}
+
+/* --- MEDIA QUERY (Unchanged but crucial) --- */
+/* This block applies only when the screen width is 768px or less */
+@media (max-width: 768px) {
+  /* Hide the desktop elements */
+  .navbar-menu.desktop,
+  .navbar-user.desktop {
+    display: none;
+  }
+
+  /* Show the hamburger icon */
+  .hamburger-icon {
+    display: block;
+  }
 }

@@ -13,7 +13,7 @@ import MapController from './MapController'; // Import the controller
 
 // ... (Leaflet icon fix from before)
 
-const Map = ({ user, isListOpen, onCloseList }) => {
+const Map = ({ user, isListOpen, onCloseList, onPinSelectCloseMenu }) => {
   const [pins, setPins] = useState([]);
   const [newPinLocation, setNewPinLocation] = useState(null);
   const [selectedPin, setSelectedPin] = useState(null); // State for the selected pin from the list
@@ -48,7 +48,8 @@ const Map = ({ user, isListOpen, onCloseList }) => {
 
   const handlePinSelect = (pin) => {
     setSelectedPin(pin);
-    onCloseList(); // Close the sidebar after selecting a pin
+    onCloseList();
+    onPinSelectCloseMenu();
   };
 
   return (
@@ -58,8 +59,17 @@ const Map = ({ user, isListOpen, onCloseList }) => {
         isOpen={isListOpen} 
         onClose={onCloseList} 
         onPinSelect={handlePinSelect}
+        selectedPin={selectedPin}
       />
-      <MapContainer center={[20, 0]} zoom={3} style={{ height: '100vh', width: '100%' }}>
+      {selectedPin && (
+      <button 
+        className="recenter-button"
+        onClick={() => map.flyTo([selectedPin.lat, selectedPin.lng], 13)}
+      >
+        Re-center on {selectedPin.title}
+      </button>
+      )}
+      <MapContainer center={[20, 0]} zoom={3} style={{ height: '100vh', width: '100vw' }}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
