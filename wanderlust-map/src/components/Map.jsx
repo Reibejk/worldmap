@@ -11,7 +11,13 @@ import VisitedList from './VisitedList'; // Import the sidebar
 import MapController from './MapController'; // Import the controller
 
 
-// ... (Leaflet icon fix from before)
+delete L.Icon.Default.prototype._getIconUrl;
+
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+});
 
 const Map = ({ user, isListOpen, onCloseList, onPinSelectCloseMenu }) => {
   const [pins, setPins] = useState([]);
